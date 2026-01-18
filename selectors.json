@@ -19,7 +19,8 @@
 
     "international_tuition_fee_raw": {
       "type": "table",
-      "selector": "table tr td p.preamble:not(:has(a))"
+      "selector": "table tr:has(a:-soup-contains("International")) td:last-of-type p.preamble
+"
     },
 
     "english_test_requirement_raw": {
