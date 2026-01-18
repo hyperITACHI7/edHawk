@@ -24,7 +24,7 @@
 
     "english_test_requirement_raw": {
       "type": "blocks",
-      "selector": "p.preamble + ul > li.preamble > p.preamble"
+      "selector": "div.container ul li.preamble > p.preamble"
     },
 
     "indian_entry_requirement_raw": {
