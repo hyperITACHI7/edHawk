@@ -16,7 +16,6 @@ TIMEOUT = 20
 with open("selectors.json", "r", encoding="utf-8") as f:
     SELECTOR_DB = json.load(f)
 
-
 # -----------------------------
 # Utilities
 # -----------------------------
@@ -31,47 +30,100 @@ def fetch_soup(url: str) -> BeautifulSoup:
     return BeautifulSoup(r.text, "html.parser")
 
 
+def is_empty(value):
+    if value is None:
+        return True
+    if isinstance(value, str) and not value.strip():
+        return True
+    if isinstance(value, list) and len(value) == 0:
+        return True
+    return False
+
+
+def safe_select(soup, selector):
+    try:
+        return soup.select(selector)
+    except Exception:
+        return []
+
+
 # -----------------------------
 # PURE extractors (NO logic)
 # -----------------------------
 
 def extract_single(soup, selector):
-    el = soup.select_one(selector)
-    return el.get_text(" ", strip=True) if el else None
+    try:
+        el = soup.select_one(selector)
+        return el.get_text(" ", strip=True) if el else None
+    except Exception:
+        return None
 
 
 def extract_by_label(soup, container_selector, label):
-    for block in soup.select(container_selector):
-        h = block.find("h4")
-        if h and h.get_text(strip=True) == label:
-            return block.get_text(" ", strip=True)
+    try:
+        for block in soup.select(container_selector):
+            h = block.find("h4")
+            if h and h.get_text(strip=True) == label:
+                return block.get_text(" ", strip=True)
+    except Exception:
+        pass
     return None
 
 
 def extract_table(soup, selector):
-    table = soup.select_one(selector)
-    if not table:
-        return None
+    try:
+        table = soup.select_one(selector)
+        if not table:
+            return None
 
-    rows = []
-    for tr in table.select("tr"):
-        rows.append([
-            td.get_text(" ", strip=True)
-            for td in tr.select("td")
-        ])
-    return rows
+        rows = []
+        for tr in table.select("tr"):
+            rows.append([
+                td.get_text(" ", strip=True)
+                for td in tr.select("td")
+            ])
+        return rows
+    except Exception:
+        return None
 
 
 def extract_blocks(soup, selector):
+    elements = safe_select(soup, selector)
     return [
         el.get_text(" ", strip=True)
-        for el in soup.select(selector)
+        for el in elements
         if el.get_text(strip=True)
     ]
 
 
 # -----------------------------
-# Orchestrator
+# Generic extractor dispatcher
+# -----------------------------
+
+def apply_extractor(soup, rules):
+    extractor_type = rules.get("type")
+
+    if extractor_type == "single":
+        return extract_single(soup, rules["selector"])
+
+    if extractor_type == "by_label":
+        return extract_by_label(
+            soup,
+            rules["container_selector"],
+            rules["label"]
+        )
+
+    if extractor_type == "table":
+        return extract_table(soup, rules["selector"])
+
+    if extractor_type == "blocks":
+        return extract_blocks(soup, rules["selector"])
+
+    return None
+
+
+# -----------------------------
+# Orchestrator (PRIMARY → FALLBACK)
 # -----------------------------
 
 def extract_course_data(course_url: str) -> dict:
@@ -80,30 +132,34 @@ def extract_course_data(course_url: str) -> dict:
     if domain not in SELECTOR_DB:
         raise ValueError(f"No selector config for {domain}")
 
-    soup = fetch_soup(course_url)
+    course_soup = fetch_soup(course_url)
     config = SELECTOR_DB[domain]
 
     data = {
         "course_url": course_url
     }
 
-    for field, rules in config.items():
+    for field, rule_set in config.items():
 
-        if rules["type"] == "single":
-            data[field] = extract_single(soup, rules["selector"])
+        result = None
 
-        elif rules["type"] == "by_label":
-            data[field] = extract_by_label(
-                soup,
-                rules["container_selector"],
-                rules["label"]
-            )
+        # ---------- PRIMARY ----------
+        primary = rule_set.get("primary")
+        if primary:
+            if primary.get("source") == "external":
+                soup = fetch_soup(primary["url"])
+            else:
+                soup = course_soup
 
-        elif rules["type"] == "table":
-            data[field] = extract_table(soup, rules["selector"])
+            result = apply_extractor(soup, primary)
 
-        elif rules["type"] == "blocks":
-            data[field] = extract_blocks(soup, rules["selector"])
+        # ---------- FALLBACK ----------
+        if is_empty(result):
+            fallback = rule_set.get("fallback")
+            if fallback:
+                soup = fetch_soup(fallback["url"])
+                result = apply_extractor(soup, fallback)
+
+        data[field] = result
 
     return data
-
