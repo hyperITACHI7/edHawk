@@ -5,12 +5,6 @@
         "source": "course",
         "type": "single",
         "selector": "h1#headerBannerTitle"
-      },
-      "fallback": {
-        "source": "",
-        "url": "",
-        "type": "",
-        "selector": ""
       }
     },
 
@@ -20,12 +14,6 @@
         "type": "by_label",
         "container_selector": "div.e-item",
         "label": "Duration"
-      },
-      "fallback": {
-        "source": "",
-        "url": "",
-        "type": "",
-        "selector": ""
       }
     },
 
@@ -35,12 +23,6 @@
         "type": "by_label",
         "container_selector": "div.e-item",
         "label": "Start Date"
-      },
-      "fallback": {
-        "source": "",
-        "url": "",
-        "type": "",
-        "selector": ""
       }
     },
 
@@ -49,21 +31,10 @@
         "source": "course",
         "type": "table",
         "selector": "table:has(a:-soup-contains(\"International\"))"
-      },
-      "fallback": {
-        "source": "",
-        "url": "",
-        "type": "",
-        "selector": ""
       }
     },
 
     "english_test_requirement_raw": {
-      "primary": {
-        "source": "",
-        "type": "",
-        "selector": ""
-      },
       "fallback": {
         "source": "external",
         "url": "https://www.abertay.ac.uk/international/english-language-requirements/",
@@ -77,12 +48,6 @@
         "source": "course",
         "type": "blocks",
         "selector": "div.more"
-      },
-      "fallback": {
-        "source": "",
-        "url": "",
-        "type": "",
-        "selector": ""
       }
     }
   }
