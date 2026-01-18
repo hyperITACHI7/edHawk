@@ -1,35 +1,89 @@
 {
   "abertay.ac.uk": {
     "course_name": {
-      "type": "single",
-      "selector": "h1#headerBannerTitle"
+      "primary": {
+        "source": "course",
+        "type": "single",
+        "selector": "h1#headerBannerTitle"
+      },
+      "fallback": {
+        "source": "",
+        "url": "",
+        "type": "",
+        "selector": ""
+      }
     },
 
     "duration_raw": {
-      "type": "by_label",
-      "container_selector": "div.e-item",
-      "label": "Duration"
+      "primary": {
+        "source": "course",
+        "type": "by_label",
+        "container_selector": "div.e-item",
+        "label": "Duration"
+      },
+      "fallback": {
+        "source": "",
+        "url": "",
+        "type": "",
+        "selector": ""
+      }
     },
 
     "available_intakes_raw": {
-      "type": "by_label",
-      "container_selector": "div.e-item",
-      "label": "Start Date"
+      "primary": {
+        "source": "course",
+        "type": "by_label",
+        "container_selector": "div.e-item",
+        "label": "Start Date"
+      },
+      "fallback": {
+        "source": "",
+        "url": "",
+        "type": "",
+        "selector": ""
+      }
     },
 
     "international_tuition_fee_raw": {
-      "type": "table",
-      "selector": "table:has(a:-soup-contains(\"International\"))"
+      "primary": {
+        "source": "course",
+        "type": "table",
+        "selector": "table:has(a:-soup-contains(\"International\"))"
+      },
+      "fallback": {
+        "source": "",
+        "url": "",
+        "type": "",
+        "selector": ""
+      }
     },
 
     "english_test_requirement_raw": {
-      "type": "blocks",
-      "selector": "div.container ul li.preamble > p.preamble"
+      "primary": {
+        "source": "",
+        "type": "",
+        "selector": ""
+      },
+      "fallback": {
+        "source": "external",
+        "url": "https://www.abertay.ac.uk/international/english-language-requirements/",
+        "type": "blocks",
+        "selector": "ul > li.preamble > p.preamble"
+      }
     },
 
     "indian_entry_requirement_raw": {
-      "type": "blocks",
-      "selector": "div.more"
+      "primary": {
+        "source": "course",
+        "type": "blocks",
+        "selector": "div.more"
+      },
+      "fallback": {
+        "source": "",
+        "url": "",
+        "type": "",
+        "selector": ""
+      }
     }
   }
 }
