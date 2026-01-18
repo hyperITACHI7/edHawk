@@ -47,7 +47,7 @@
       "primary": {
         "source": "course",
         "type": "blocks",
-        "selector": "div#result-display > p.preamble"
+        "selector": "div#result-display p.preamble"
       }
     }
   }
