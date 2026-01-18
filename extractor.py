@@ -110,7 +110,7 @@ def extract_course_data(course_url: str) -> dict:
         soup,
         block_configs=[
             {
-                "selector": "div#020 p.preamble",
+                "selector": 'div[id="020"] p.preamble',
                 "must_contain": ["minimum"],
                 "level": "general"
             }
