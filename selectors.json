@@ -24,7 +24,7 @@
 
     "english_test_requirement_raw": {
       "type": "blocks",
-      "selector": "div[id=\"020\"]"
+      "selector": "h2:-soup-contains("English language requirements") ~ *"
     },
 
     "indian_entry_requirement_raw": {
