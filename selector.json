@@ -1,0 +1,35 @@
+{
+  "abertay.ac.uk": {
+    "course_name": {
+      "type": "single",
+      "selector": "h1#headerBannerTitle"
+    },
+
+    "duration_raw": {
+      "type": "by_label",
+      "container_selector": "div.e-item",
+      "label": "Duration"
+    },
+
+    "available_intakes_raw": {
+      "type": "by_label",
+      "container_selector": "div.e-item",
+      "label": "Start Date"
+    },
+
+    "international_tuition_fee_raw": {
+      "type": "table",
+      "selector": "table"
+    },
+
+    "english_test_requirement_raw": {
+      "type": "blocks",
+      "selector": "div[id=\"020\"]"
+    },
+
+    "indian_entry_requirement_raw": {
+      "type": "blocks",
+      "selector": "div.more"
+    }
+  }
+}
