@@ -10,14 +10,12 @@ def extract():
     if not payload or "course_url" not in payload:
         return jsonify({"error": "course_url missing"}), 400
 
-    course_url = payload["course_url"]
-
     try:
-        result = extract_course_data(course_url)
+        result = extract_course_data(payload["course_url"])
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    app.run(host="0.0.0.0", port=8000)
