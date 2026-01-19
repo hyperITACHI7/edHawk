@@ -44,10 +44,11 @@
     },
 
     "indian_entry_requirement_raw": {
-      "primary": {
-        "source": "course",
+      "fallback": {
+        "source": "external",
+        "url": "https://www.abertay.ac.uk/international/south-asia/india/",
         "type": "blocks",
-        "selector": "div#result-display p.preamble"
+        "selector": "div.e-item:has(h3:-soup-contains(\"Undergraduate\")) div.more"
       }
     }
   }
